@@ -2,6 +2,7 @@ package assignment3;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -9,8 +10,11 @@ import java.util.Properties;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
 public class KeywordAnalyser {
@@ -19,6 +23,7 @@ public class KeywordAnalyser {
     HashMap<String, Integer> RBVBCounts = new HashMap<String, Integer>();
     HashMap<String, Integer> JJVBCounts = new HashMap<String, Integer>();
     HashMap<String, Integer> VBNNCounts = new HashMap<String, Integer>();
+    HashMap<String, Integer> SubjRootObjCounts = new HashMap<String, Integer>();
 	
 	public KeywordAnalyser() {
 		Properties props = new Properties();
@@ -58,6 +63,7 @@ public class KeywordAnalyser {
 		System.out.println("Top RB-VB:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(RBVBCounts, 20)));
 		System.out.println("Top JJ-VB:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(JJVBCounts, 20)));
 		System.out.println("Top VB-NN:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(VBNNCounts, 20)));
+		System.out.println("Top Subj-Root-Obj:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(SubjRootObjCounts, 20)));
 		
 	}
 	
@@ -66,7 +72,8 @@ public class KeywordAnalyser {
 		Annotation document = new Annotation(content);
 		pipeline.annotate(document);
 		
- 
+		
+		// START - POS ANALYSIS
 		for (CoreMap sentence: document.get(CoreAnnotations.SentencesAnnotation.class)) {
 			List<CoreLabel> labels = sentence.get(CoreAnnotations.TokensAnnotation.class);
 			List<String> labelsPos = getPosOfLabels(labels);
@@ -87,6 +94,34 @@ public class KeywordAnalyser {
 				FrequencyStats.incrementFreq(VBNNCounts, keyword.toLowerCase());
 			}
 		}
+		
+		// START - DEPENDENCY ANALYSIS
+		
+		for (CoreMap sentence: document.get(CoreAnnotations.SentencesAnnotation.class)) {
+			SemanticGraph deps = (sentence.get(SemanticGraphCoreAnnotations.CollapsedDependenciesAnnotation.class));
+
+			Collection<IndexedWord> roots = deps.getRoots();
+			if(roots.size() > 0) {
+				IndexedWord root = roots.iterator().next();
+				Collection<IndexedWord> subjs = new ArrayList<IndexedWord>();
+				Collection<IndexedWord> objs = new ArrayList<IndexedWord>();
+				for (IndexedWord child: deps.getChildren(root)) {
+					if(deps.reln(root, child).toString() == "nsubj") {
+						subjs.add(child);
+					}
+					if (deps.reln(root, child).toString() == "dobj"){
+						objs.add(child);
+					}
+				}
+				for(IndexedWord subj: subjs) {
+					for(IndexedWord obj: objs) {
+						FrequencyStats.incrementFreq(SubjRootObjCounts , (subj.lemma() + "_" + root.lemma() + "_" + obj.lemma()).toLowerCase());
+					}
+				}
+			}
+		}
+		
+		// END- DEPENDENCY ANALYSIS
 		
 
 	}
