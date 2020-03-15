@@ -1,31 +1,17 @@
 package assignment3;
 
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-
-import java.util.List;
-
 import com.opencsv.CSVReader;
 
 
-/**
- * Hello world!
- *
- */
 public class App {
 	
 	public static void main(String[] args) {
-//
-//		
-//		HashTag
-//		TextPreprocessor preprocessor = new TextPreprocessor();
 
-//		ArrayList<String> lines = FileOperations.readFileAsLines("/Users/coderpc/Class/BDS/trial.csv");
 		
 		
 		ArrayList<String> positives = new ArrayList<String>();
@@ -60,14 +46,12 @@ public class App {
         // END - DATA EXPLORATION
         
         
-        
         // START - MOST COMMON 1,2,3,4-GRAMS
-        
+
         NGramAnalyser nGramAnalyser = new NGramAnalyser();
         nGramAnalyser.analyseAll(allTweets);
         
         // END - MOST COMMON 1,2,3,4-GRAMS
-        
         
         
         // START - MOST COMMON noun-GRAMS
@@ -77,12 +61,11 @@ public class App {
         // END - MOST COMMON noun-GRAMS
         
         
+        // START - POS, DEPENDENCY PARSING, NER
+        
         KeywordAnalyser keywordAnalyser = new KeywordAnalyser();
         keywordAnalyser.analyseAll(allTweets);
         
-       
-        
-         
-        
+        // END - POS, DEPENDENCY PARSING, NER
 	}
 }

@@ -25,7 +25,7 @@ public class PrefixedWordStats {
 	
 	public void process(String content) {
 		for(String word: content.split(" ")) {
-			if(word.startsWith(prefix)) {
+			if(word.startsWith(prefix) && word.length()>1) {
 				FrequencyStats.incrementFreq(wordCounts, word.toLowerCase());
 			}
 		}

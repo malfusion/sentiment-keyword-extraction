@@ -39,16 +39,8 @@ public class KeywordAnalyser {
 	
 	
 	public void analyseAll(List<String> contents) {
-		int cnt = 0;
-		System.out.println("Total:" + contents.size());
 		for(String content: contents) {
-			if(cnt % 10000 == 0) {
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-				LocalDateTime now = LocalDateTime.now();  
-				System.out.println(cnt + " :: " + dtf.format(now));  
-			}				
 			analyse(content);
-			cnt += 1;
 		}
 		System.out.println("Top 20 JJ-NN:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(JJNNCounts, 20)));
 		System.out.println("Top 20 RB-VB:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(RBVBCounts, 20)));
