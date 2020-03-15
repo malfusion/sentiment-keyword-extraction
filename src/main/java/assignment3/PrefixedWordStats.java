@@ -26,11 +26,7 @@ public class PrefixedWordStats {
 	public void process(String content) {
 		for(String word: content.split(" ")) {
 			if(word.startsWith(prefix)) {
-				String hashtag = word.toLowerCase();
-				if(!wordCounts.containsKey(hashtag)) {
-					wordCounts.put(hashtag, 0);
-				}
-				wordCounts.put(hashtag, wordCounts.get(hashtag)+1);
+				FrequencyStats.incrementFreq(wordCounts, word.toLowerCase());
 			}
 		}
 	}

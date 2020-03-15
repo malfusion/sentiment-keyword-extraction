@@ -14,7 +14,6 @@ public class FrequencyStats {
 		}
 		Collections.sort(freqList, Collections.reverseOrder());
 		String[] res = new String[n];
-		System.out.println("Freq" + freqList.size());
 		for (int i = 0; i < n && i < freqList.size(); i++) {
 			res[i] = freqList.get(i).getKey() + " : " + freqList.get(i).getFreq();
 		}

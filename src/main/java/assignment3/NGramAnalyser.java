@@ -23,6 +23,10 @@ public class NGramAnalyser {
     HashMap<String, Integer> twoGramCounts = new HashMap<String, Integer>();
     HashMap<String, Integer> threeGramCounts = new HashMap<String, Integer>();
     HashMap<String, Integer> fourGramCounts = new HashMap<String, Integer>();
+    HashMap<String, Integer> oneGramNounCounts = new HashMap<String, Integer>();
+    HashMap<String, Integer> twoGramNounCounts = new HashMap<String, Integer>();
+    HashMap<String, Integer> threeGramNounCounts = new HashMap<String, Integer>();
+    HashMap<String, Integer> fourGramNounCounts = new HashMap<String, Integer>();
     
 	
 	public NGramAnalyser() {
@@ -50,22 +54,22 @@ public class NGramAnalyser {
 			List<String> fourGrams  = NGramAnalyser.getNGrams(lemmas, new ArrayList<Integer>(Arrays.asList(4)));
 			
 			for(String oneGram: oneGrams) {
-				FrequencyStats.incrementFreq(oneGramCounts, oneGram);
+				FrequencyStats.incrementFreq(oneGramCounts, oneGram.toLowerCase());
 			}
 			for(String twoGram: twoGrams) {
-				FrequencyStats.incrementFreq(twoGramCounts, twoGram);
+				FrequencyStats.incrementFreq(twoGramCounts, twoGram.toLowerCase());
 			}
 			for(String threeGram: threeGrams) {
-				FrequencyStats.incrementFreq(threeGramCounts, threeGram);
+				FrequencyStats.incrementFreq(threeGramCounts, threeGram.toLowerCase());
 			}
 			for(String fourGram: fourGrams) {
-				FrequencyStats.incrementFreq(fourGramCounts, fourGram);
+				FrequencyStats.incrementFreq(fourGramCounts, fourGram.toLowerCase());
 			}
 		}
-		System.out.println("Top 1-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(oneGramCounts,   20)));
-		System.out.println("Top 2-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(twoGramCounts,   20)));
-		System.out.println("Top 3-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(threeGramCounts, 20)));
-		System.out.println("Top 4-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(fourGramCounts,  20)));
+		System.out.println("Top 20 1-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(oneGramCounts,   20)));
+		System.out.println("Top 20 2-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(twoGramCounts,   20)));
+		System.out.println("Top 20 3-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(threeGramCounts, 20)));
+		System.out.println("Top 20 4-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(fourGramCounts,  20)));
 	}
 	
 	public void analyseAllOnlyNouns(ArrayList<String> contents) {
@@ -90,22 +94,22 @@ public class NGramAnalyser {
 			List<String> fourGrams  = NGramAnalyser.getNGrams(lemmas, new ArrayList<Integer>(Arrays.asList(4)));
 			
 			for(String oneGram: oneGrams) {
-				FrequencyStats.incrementFreq(oneGramCounts, oneGram);
+				FrequencyStats.incrementFreq(oneGramNounCounts, oneGram.toLowerCase());
 			}
 			for(String twoGram: twoGrams) {
-				FrequencyStats.incrementFreq(twoGramCounts, twoGram);
+				FrequencyStats.incrementFreq(twoGramNounCounts, twoGram.toLowerCase());
 			}
 			for(String threeGram: threeGrams) {
-				FrequencyStats.incrementFreq(threeGramCounts, threeGram);
+				FrequencyStats.incrementFreq(threeGramNounCounts, threeGram.toLowerCase());
 			}
 			for(String fourGram: fourGrams) {
-				FrequencyStats.incrementFreq(fourGramCounts, fourGram);
+				FrequencyStats.incrementFreq(fourGramNounCounts, fourGram.toLowerCase());
 			}
 		}
-		System.out.println("Top 1-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(oneGramCounts,   20)));
-		System.out.println("Top 2-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(twoGramCounts,   20)));
-		System.out.println("Top 3-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(threeGramCounts, 20)));
-		System.out.println("Top 4-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(fourGramCounts,  20)));
+		System.out.println("Top 20 Noun 1-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(oneGramNounCounts,   20)));
+		System.out.println("Top 20 Noun 2-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(twoGramNounCounts,   20)));
+		System.out.println("Top 20 Noun 3-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(threeGramNounCounts, 20)));
+		System.out.println("Top 20 Noun 4-Grams:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(fourGramNounCounts,  20)));
 	}
 		
 	private List<CoreLabel> filterStopwords(List<CoreLabel> labels){

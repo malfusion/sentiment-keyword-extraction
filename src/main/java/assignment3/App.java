@@ -34,7 +34,7 @@ public class App {
 		
 		CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader("/Users/coderpc/Class/BDS/trial.csv"));
+            reader = new CSVReader(new FileReader("/Users/coderpc/Class/BDS/sentiment140.csv"));
             String[] line;
             
             while ((line = reader.readNext()) != null) {
@@ -54,8 +54,8 @@ public class App {
         PrefixedWordStats mentionStats = new PrefixedWordStats("@");
     	hashtagStats.processAll(allTweets);
     	mentionStats.processAll(allTweets);
-        System.out.println(Arrays.toString(hashtagStats.getTopFrequencyWords(5)));
-        System.out.println(Arrays.toString(mentionStats.getTopFrequencyWords(5)));
+        System.out.println("Top 20 Hashtags: " + Arrays.toString(hashtagStats.getTopFrequencyWords(20)));
+        System.out.println("Top 20 Mentions: " + Arrays.toString(mentionStats.getTopFrequencyWords(20)));
 
         // END - DATA EXPLORATION
         
@@ -63,8 +63,8 @@ public class App {
         
         // START - MOST COMMON 1,2,3,4-GRAMS
         
-//        NGramAnalyser nGramAnalyser = new NGramAnalyser();
-//        nGramAnalyser.analyseAll(allTweets);
+        NGramAnalyser nGramAnalyser = new NGramAnalyser();
+        nGramAnalyser.analyseAll(allTweets);
         
         // END - MOST COMMON 1,2,3,4-GRAMS
         
@@ -72,7 +72,7 @@ public class App {
         
         // START - MOST COMMON noun-GRAMS
         
-//        nGramAnalyser.analyseAllOnlyNouns(allTweets);
+        nGramAnalyser.analyseAllOnlyNouns(allTweets);
         
         // END - MOST COMMON noun-GRAMS
         
@@ -80,40 +80,9 @@ public class App {
         KeywordAnalyser keywordAnalyser = new KeywordAnalyser();
         keywordAnalyser.analyseAll(allTweets);
         
+       
         
+         
         
-        
-        
-        
-//		StringBuilder allNegatives = new StringBuilder();
-//		for(String sentence: negatives) {
-//			allNegatives.append(sentence);
-//			allNegatives.append(". ");
-//		}
-//		String allNegativesStr = allNegatives.toString();
-//		
-//		System.out.println(allNegativesStr.length());
-//        TextPreprocessor preprocessor = new TextPreprocessor();
-//        preprocessor.process(allNegativesStr);
-        
-        
-        
-
-		
-//		try {
-//			String sentFragModel = "src/main/resources/en-sent.bin";
-//			DefaultDocProcessor dp =new DefaultDocProcessor(sentFragModel);
-//			LexicalChainingSummarizer lcs = new LexicalChainingSummarizer(dp,"src/main/resources/en-pos-maxent.bin");
-//
-//			List<Sentence> sent = dp.getSentencesFromStr(allNegativesStr);
-//			List<LexicalChain> vh = lcs.buildLexicalChains(allNegativesStr, sent);
-//			LexChainingKeywordExtractor ke = new LexChainingKeywordExtractor();
-//			List<String> keywords = ke.getKeywords(vh, 5);
-//			System.out.println(keywords);
-//	        	
-//		}
-//		catch(Exception e) {
-//			e.printStackTrace();
-//		}
 	}
 }

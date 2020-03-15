@@ -1,5 +1,7 @@
 package assignment3;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,46 +26,36 @@ public class KeywordAnalyser {
     HashMap<String, Integer> JJVBCounts = new HashMap<String, Integer>();
     HashMap<String, Integer> VBNNCounts = new HashMap<String, Integer>();
     HashMap<String, Integer> SubjRootObjCounts = new HashMap<String, Integer>();
+    HashMap<String, Integer> EntityCounts = new HashMap<String, Integer>();
 	
 	public KeywordAnalyser() {
 		Properties props = new Properties();
 		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,depparse,ner");
-//		props.setProperty("threads", "4");
 		props.setProperty("ner.useSUTime", "false");
 		props.setProperty("tokenize.options", "untokenizable=noneDelete");
 		this.pipeline = new StanfordCoreNLP(props);
 	}
 	
 	
-	public List<String> getPosOfLabels(List<CoreLabel> labels) {
-		List<String> labelsPos = new ArrayList<String>();
-		for(CoreLabel label: labels) {
-			labelsPos.add(label.get(PartOfSpeechAnnotation.class));
-		};
-		return labelsPos;
-	}
-	
-	
-	public List<String> getWordsWithPOSPattern(List<CoreLabel> labels, List<String> labelsPos, String firstPos, String secondPos) {
-		List<String> keywords = new ArrayList<String>();
-		for (int i = 0; i < labels.size()-1; i++) {
-			if(labelsPos.get(i).startsWith(firstPos) && labelsPos.get(i+1).startsWith(secondPos)) {
-				keywords.add(labels.get(i).word()+"_"+labels.get(i+1).word());
-			}
-		}
-		return keywords;
-	}
-	
 	
 	public void analyseAll(List<String> contents) {
+		int cnt = 0;
+		System.out.println("Total:" + contents.size());
 		for(String content: contents) {
+			if(cnt % 10000 == 0) {
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+				LocalDateTime now = LocalDateTime.now();  
+				System.out.println(cnt + " :: " + dtf.format(now));  
+			}				
 			analyse(content);
+			cnt += 1;
 		}
-		System.out.println("Top JJ-NN:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(JJNNCounts, 20)));
-		System.out.println("Top RB-VB:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(RBVBCounts, 20)));
-		System.out.println("Top JJ-VB:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(JJVBCounts, 20)));
-		System.out.println("Top VB-NN:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(VBNNCounts, 20)));
-		System.out.println("Top Subj-Root-Obj:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(SubjRootObjCounts, 20)));
+		System.out.println("Top 20 JJ-NN:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(JJNNCounts, 20)));
+		System.out.println("Top 20 RB-VB:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(RBVBCounts, 20)));
+		System.out.println("Top 20 JJ-VB:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(JJVBCounts, 20)));
+		System.out.println("Top 20 VB-NN:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(VBNNCounts, 20)));
+		System.out.println("Top 20 Subj-Root-Obj:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(SubjRootObjCounts, 20)));
+		System.out.println("Top 20 Entities:" + Arrays.toString(FrequencyStats.getTopFrequencyWords(EntityCounts, 20)));
 		
 	}
 	
@@ -76,6 +68,7 @@ public class KeywordAnalyser {
 		// START - POS ANALYSIS
 		for (CoreMap sentence: document.get(CoreAnnotations.SentencesAnnotation.class)) {
 			List<CoreLabel> labels = sentence.get(CoreAnnotations.TokensAnnotation.class);
+			labels = removeDotLabels(labels);
 			List<String> labelsPos = getPosOfLabels(labels);
 			// Looking for Adjective Noun [JJ, NN]
 			for(String keyword: getWordsWithPOSPattern(labels, labelsPos, "JJ", "NN")) {
@@ -121,9 +114,77 @@ public class KeywordAnalyser {
 			}
 		}
 		
-		// END- DEPENDENCY ANALYSIS
+		// END - DEPENDENCY ANALYSIS
 		
+		// START - NAMED ENTITIES ANALY
+		
+		for (CoreMap sentence: document.get(CoreAnnotations.SentencesAnnotation.class)) {
+			List<CoreLabel> labels = sentence.get(CoreAnnotations.TokensAnnotation.class);
+			labels = removeDotLabels(labels);
+			for(String entity: getEntities(labels)) {
+				FrequencyStats.incrementFreq(EntityCounts , entity.toLowerCase());
+			}
+		}
+		
+		// END - NAMED ENTITIES ANALY
+		
+		
+	}
+	
 
+	private List<String> getPosOfLabels(List<CoreLabel> labels) {
+		List<String> labelsPos = new ArrayList<String>();
+		for(CoreLabel label: labels) {
+			labelsPos.add(label.get(PartOfSpeechAnnotation.class));
+		};
+		return labelsPos;
+	}
+	
+	
+	private List<String> getWordsWithPOSPattern(List<CoreLabel> labels, List<String> labelsPos, String firstPos, String secondPos) {
+		List<String> keywords = new ArrayList<String>();
+		for (int i = 0; i < labels.size()-1; i++) {
+			if(labelsPos.get(i).startsWith(firstPos) && labelsPos.get(i+1).startsWith(secondPos)) {
+				keywords.add(labels.get(i).word()+"_"+labels.get(i+1).word());
+			}
+		}
+		return keywords;
+	}
+	
+	
+	private List<String> getEntities(List<CoreLabel> labels){
+		ArrayList<String> res = new ArrayList<String>();
+		String prev = "";
+		String word = "";
+		for(CoreLabel label: labels) {
+			String curr = label.ner();
+			if (prev != curr) {
+				if(prev.length() != 1 && word != "") {
+					res.add(word);
+				}
+				word = label.lemma();
+			}
+			else {
+				word += "_" + label.lemma();
+			}
+			prev = curr;
+		}
+		if(word != "") {
+			res.add(word);
+		}
+		return res;
+	}
+	
+	
+	private List<CoreLabel> removeDotLabels(List<CoreLabel> labels) {
+		List<CoreLabel> res = new ArrayList<CoreLabel>();
+
+		for(CoreLabel label: labels) {
+			if(!label.lemma().contentEquals(".")) {
+				res.add(label);
+			}
+		}
+		return res;
 	}
 	
 	
