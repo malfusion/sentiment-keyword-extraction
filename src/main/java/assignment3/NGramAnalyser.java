@@ -79,7 +79,6 @@ public class NGramAnalyser {
 			
 			for(CoreLabel label: labels) {
 				String pos = label.get(PartOfSpeechAnnotation.class);
-				System.out.println(label.lemma() + ":" + pos);
 				if(pos.startsWith("NN")) {
 					lemmas.add(label.lemma());
 				}

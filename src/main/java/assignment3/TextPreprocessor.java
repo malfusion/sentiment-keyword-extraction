@@ -110,9 +110,7 @@ public class TextPreprocessor {
 //		ArrayList<Integer> sizes = new ArrayList<Integer>(Arrays.asList(1));
 //		res.addAll(getNGrams(words, sizes));
 		List<CoreLabel> labels = document.get(CoreAnnotations.TokensAnnotation.class);
-		
 //		labels = filterStopwords(labels);
-		
 		List<String> words = groupNamedEntities(labels);
 		System.out.println(words);
 		return res;
