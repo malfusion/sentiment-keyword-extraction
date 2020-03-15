@@ -20,7 +20,7 @@ public class App {
 		
 		CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader("/Users/coderpc/Class/BDS/sentiment140.csv"));
+            reader = new CSVReader(new FileReader("sentiment140.csv"));
             String[] line;
             
             while ((line = reader.readNext()) != null) {
