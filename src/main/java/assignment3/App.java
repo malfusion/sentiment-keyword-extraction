@@ -12,12 +12,6 @@ import java.util.List;
 
 import com.opencsv.CSVReader;
 
-import opennlp.summarization.Sentence;
-import opennlp.summarization.lexicalchaining.LexChainingKeywordExtractor;
-import opennlp.summarization.lexicalchaining.LexicalChain;
-import opennlp.summarization.lexicalchaining.LexicalChainingSummarizer;
-import opennlp.summarization.preprocess.DefaultDocProcessor;
-
 
 /**
  * Hello world!
