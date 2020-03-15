@@ -18,13 +18,13 @@
 			<version>3.5.2</version>
 			<classifier>models</classifier>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>intoxicant.analytics</groupId>
 			<artifactId>coreNlpExtensions</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>/Users/coderpc/Downloads/coreNlpExtensions-1.0.jar</systemPath>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>

@@ -30,60 +30,54 @@ public class App {
 		
 		ArrayList<String> positives = new ArrayList<String>();
 		ArrayList<String> negatives = new ArrayList<String>();
+		ArrayList<String> allTweets = new ArrayList<String>();
 		
 		CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader("/Users/coderpc/Class/BDS/prefixtest.csv"));
+            reader = new CSVReader(new FileReader("/Users/coderpc/Class/BDS/trial.csv"));
             String[] line;
+            
             while ((line = reader.readNext()) != null) {
             	int sentiment = Integer.parseInt(line[0]);
-            	String text = line[5];
-            	if(sentiment == 0) {
-					text = DataCleaningUtils.removeEndLine(text);
-            		text = DataCleaningUtils.cleanPrefixes(text, "@"); 
-					text = DataCleaningUtils.cleanPrefixes(text, "#");
-					text = DataCleaningUtils.removeUrls(text);
-            		text = DataCleaningUtils.cleanPunctuations(text);
-            		text = DataCleaningUtils.cleanSpaces(text);
-            		negatives.add(text);
-            	}
-            	else if(sentiment == 4) {
-					text = DataCleaningUtils.removeEndLine(text);
-            		text = DataCleaningUtils.cleanPrefixes(text, "@"); 
-					text = DataCleaningUtils.cleanPrefixes(text, "#");
-					text = DataCleaningUtils.removeUrls(text);
-            		text = DataCleaningUtils.cleanPunctuations(text);
-            		text = DataCleaningUtils.cleanSpaces(text);
-            		positives.add(text);
-            	}
+            	String tweetText = DataCleaningUtils.runDataCleaners(line[5]);
+            	if(sentiment == 0) negatives.add(tweetText);
+            	if(sentiment == 4) positives.add(tweetText);
+            	allTweets.add(tweetText);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         
-        System.out.println("Positive lines: " + positives.size());
-        System.out.println("Negative lines: " + negatives.size());
+        // START - DATA EXPLORATION
         
-//        PrefixedWordStats hashtagStats = new PrefixedWordStats("#");
-//        PrefixedWordStats mentionStats = new PrefixedWordStats("@");
-//        for(String line: negatives) {
-//        	hashtagStats.process(line);
-//        	mentionStats.process(line);
-//        }
-//        
-//        System.out.println(Arrays.toString(hashtagStats.getTopFrequencyWords(5)));
-//        System.out.println(Arrays.toString(mentionStats.getTopFrequencyWords(5)));
-//        
-		StringBuilder allNegatives = new StringBuilder();
-		for(String sentence: negatives) {
-			allNegatives.append(sentence);
-			allNegatives.append(". ");
-		}
-		String allNegativesStr = allNegatives.toString();
-		
-		System.out.println(allNegativesStr.length());
-        TextPreprocessor preprocessor = new TextPreprocessor();
-        preprocessor.process(allNegativesStr);
+        PrefixedWordStats hashtagStats = new PrefixedWordStats("#");
+        PrefixedWordStats mentionStats = new PrefixedWordStats("@");
+    	hashtagStats.processAll(allTweets);
+    	mentionStats.processAll(allTweets);
+        System.out.println(Arrays.toString(hashtagStats.getTopFrequencyWords(5)));
+        System.out.println(Arrays.toString(mentionStats.getTopFrequencyWords(5)));
+
+        // END - DATA EXPLORATION
+        
+        
+        
+        // START - MOST COMMON 1,2,3,4-GRAMS
+        
+        NGramAnalyser nGramAnalyser = new NGramAnalyser();
+        nGramAnalyser.analyseAll(allTweets);
+        
+        // END - MOST COMMON 1,2,3,4-GRAMS
+        
+//		StringBuilder allNegatives = new StringBuilder();
+//		for(String sentence: negatives) {
+//			allNegatives.append(sentence);
+//			allNegatives.append(". ");
+//		}
+//		String allNegativesStr = allNegatives.toString();
+//		
+//		System.out.println(allNegativesStr.length());
+//        TextPreprocessor preprocessor = new TextPreprocessor();
+//        preprocessor.process(allNegativesStr);
         
         
         

@@ -1,6 +1,21 @@
 package assignment3;
 
 public class DataCleaningUtils {
+	
+	public static String runDataCleaners(String str) {
+		String text = DataCleaningUtils.removeNumbers(str);
+		text = DataCleaningUtils.removeEndLine(text);
+		text = DataCleaningUtils.cleanPrefixes(text, "@"); 
+		text = DataCleaningUtils.cleanPrefixes(text, "#");
+		text = DataCleaningUtils.removeUrls(text);
+		text = DataCleaningUtils.cleanPunctuations(text);
+		text = DataCleaningUtils.cleanSpaces(text);
+		return text;
+	}
+
+	public static String removeNumbers(String str) {
+		return str.replaceAll("[0-9]", "");
+	}
 
 	public static String removeEndLine(String str) {
 		return str.replaceAll("\\r|\\n|\\t", " ") + " ";

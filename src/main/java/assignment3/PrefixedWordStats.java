@@ -16,6 +16,13 @@ public class PrefixedWordStats {
 		wordCounts = new HashMap<String, Integer>();
 	}
 	
+	
+	public void processAll(ArrayList<String> contents) {
+		for(String line: contents) {
+			process(line);
+		}
+	}
+	
 	public void process(String content) {
 		for(String word: content.split(" ")) {
 			if(word.startsWith(prefix)) {
@@ -40,17 +47,7 @@ public class PrefixedWordStats {
 	}
 	
 	public String[] getTopFrequencyWords(int n) {
-		List<Frequency<String>> freqList = new ArrayList<Frequency<String>>();
-		for(String key: wordCounts.keySet()) {
-			freqList.add(new Frequency<String>(key, wordCounts.get(key)));
-		}
-		Collections.sort(freqList, Collections.reverseOrder());
-		
-		String[] res = new String[n];
-		for (int i = 0; i < n; i++) {
-			res[i] = freqList.get(i).getKey();
-		}
-		return res;
+		return FrequencyStats.getTopFrequencyWords(wordCounts, n);
 	}
 
 }

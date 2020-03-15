@@ -27,7 +27,7 @@ public class TextPreprocessor {
 		Properties props = new Properties();
 		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
 //		props.setProperty("customAnnotatorClass.stopword", "intoxicant.analytics.coreNlp.StopwordAnnotator");
-		props.setProperty("threads", "4");
+//		props.setProperty("threads", "4");
 		props.setProperty("ner.useSUTime", "false");
 		props.setProperty("tokenize.options", "untokenizable=noneDelete");
 		this.pipeline = new StanfordCoreNLP(props);
@@ -36,7 +36,6 @@ public class TextPreprocessor {
 	public List<String> process(String content) {
 		ArrayList<String> res = new ArrayList<String>();
 		Annotation document = new Annotation(content);
-		
 		pipeline.annotate(document);
 		
 //		List<String> keywords = new ArrayList<String>(); 
@@ -120,15 +119,6 @@ public class TextPreprocessor {
 		return res;
 	}
 	
-//	private List<CoreLabel> filterStopwords(List<CoreLabel> labels){
-//		List<CoreLabel> filtered = new ArrayList<CoreLabel>();
-//		for (CoreLabel label: labels) {
-//			if (!label.get(StopwordAnnotator.class).first()) {
-//				filtered.add(label);
-//			}	
-//		}
-//		return filtered;
-//	}
 	
 	private List<String> getPosEntities(List<CoreLabel> labels){
 		List<String> res = new ArrayList<String>(); 
