@@ -68,6 +68,18 @@ public class App {
         
         // END - MOST COMMON 1,2,3,4-GRAMS
         
+        
+        
+        // START - MOST COMMON noun-GRAMS
+        
+        nGramAnalyser.analyseAllOnlyNouns(allTweets);
+        
+        // END - MOST COMMON noun-GRAMS
+        
+        
+        
+        
+        
 //		StringBuilder allNegatives = new StringBuilder();
 //		for(String sentence: negatives) {
 //			allNegatives.append(sentence);

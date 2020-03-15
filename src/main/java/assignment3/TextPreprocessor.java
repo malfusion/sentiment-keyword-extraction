@@ -50,7 +50,7 @@ public class TextPreprocessor {
 //			Collection<IndexedWord> roots = deps.getRoots();
 //			for(IndexedWord root : roots) {
 //				
-//				Collection<IndexedWord> subjs = new ArrayList<IndexedWord>(); 
+//				Collection<IndexedWord> subjs = new ArrayList<IndexedWord>();
 //				Collection<IndexedWord> objs = new ArrayList<IndexedWord>();
 //				for (IndexedWord child: deps.getChildren(root)) {
 //					if(deps.reln(root, child).toString() == "nsubj") {
@@ -65,7 +65,6 @@ public class TextPreprocessor {
 //						System.out.println(root.word() + " &-> " + subj.word() + " &-> " + obj.word());
 //					}
 //				}
-//
 //			}
 //			
 //			
