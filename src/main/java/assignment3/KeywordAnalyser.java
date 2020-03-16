@@ -37,7 +37,6 @@ public class KeywordAnalyser {
 	}
 	
 	
-	
 	public void analyseAll(List<String> contents) {
 		for(String content: contents) {
 			analyse(content);
@@ -178,6 +177,22 @@ public class KeywordAnalyser {
 		}
 		return res;
 	}
+	
+	
+	public HashMap<String, Integer> getPosFrequencyMap() {
+		return JJNNCounts;
+	}
+	
+	public HashMap<String, Integer> getDepFrequencyMap() {
+		return SubjRootObjCounts;
+	}
+	
+	public HashMap<String, Integer> getNerFrequencyMap() {
+		return EntityCounts;
+	}
+	
+	
+	
 	
 	
 	

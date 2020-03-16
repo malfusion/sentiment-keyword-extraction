@@ -19,6 +19,19 @@ public class FrequencyStats {
 		}
 		return res;
 	}
+	
+	public static Frequency[] getTopFrequencyObjects(HashMap<String, Integer> freqMap, int n) {
+		List<Frequency<String>> freqList = new ArrayList<Frequency<String>>();
+		for (String key : freqMap.keySet()) {
+			freqList.add(new Frequency<String>(key, freqMap.get(key)));
+		}
+		Collections.sort(freqList, Collections.reverseOrder());
+		Frequency[] res = new Frequency[n];
+		for (int i = 0; i < n && i < freqList.size(); i++) {
+			res[i] = new Frequency<String>(freqList.get(i).getKey(), freqList.get(i).getFreq());
+		}
+		return res;
+	}
 
 	public static void incrementFreq(HashMap<String, Integer> freqMap, String key) {
 		FrequencyStats.incrementFreqBy(freqMap, key, 1);

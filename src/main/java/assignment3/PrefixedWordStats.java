@@ -42,6 +42,10 @@ public class PrefixedWordStats {
 		return wordCounts.getOrDefault(key, 0);
 	}
 	
+	public HashMap<String, Integer> getFrequencyMap() {
+		return wordCounts;
+	}
+	
 	public String[] getTopFrequencyWords(int n) {
 		return FrequencyStats.getTopFrequencyWords(wordCounts, n);
 	}
