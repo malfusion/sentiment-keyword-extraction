@@ -12,7 +12,7 @@ Performs various keyword extraction methods on text data, including Hashtags and
 </span>
 
 ### Usage
-./keywordExtractor.jar  <path-of-input-file-with-lines-of-text>  <path-of-output-folder>
+```java --jar keywordExtractor.jar  <path-of-input-file-with-lines-of-text>  <path-of-output-folder>```
 
 ### How to run:
 - Clone the repository https://github.com/malfusion/twitter-keyword-extraction.git
