@@ -8,14 +8,11 @@ Performs various keyword extraction methods on text data, including Hashtags and
   <span>
     <img src="docs/hashtags.png" width="30%">
   </span>
-  </div>
-<div>
   <span>
     <img src="docs/pos.png" width="30%">
   </span>
-  <span>
-    <img src="docs/deps.png" width="30%">
-  </span>
+  </div>
+<div>
 </div>
 
 ### Usage
