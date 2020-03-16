@@ -1,15 +1,22 @@
 ## Sentiment Keyword Extraction
 Performs various keyword extraction methods on text data, including Hashtags and Mentions Extraction, N-gram Extraction for sizes 1, 2, 3 and 4, Parts-Of-Speech Extraction, Dependency Tree Extraction and Named Entity Extraction.
 
-<span>
-<img src="docs/mentions.png" width="30%">
-</span>
-<span>
-<img src="docs/pos.png" width="30%">
-</span>
-<span>
-<img src="docs/deps.png" width="30%">
-</span>
+<div>
+  <span>
+    <img src="docs/mentions.png" width="30%">
+  </span>
+  <span>
+    <img src="docs/hashtags.png" width="30%">
+  </span>
+  </div>
+<div>
+  <span>
+    <img src="docs/pos.png" width="30%">
+  </span>
+  <span>
+    <img src="docs/deps.png" width="30%">
+  </span>
+</div>
 
 ### Usage
 ```java --jar keywordExtractor.jar  <path-of-input-file-with-lines-of-text>  <path-of-output-folder>```
